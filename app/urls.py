@@ -8,6 +8,9 @@ from django.conf.urls.static import static
 from django.contrib.auth import  views as auth_views
 from .forms import LoginForm, MyPasswordChange,MyPasswordResetForm,MyPasswordForm
 
+from django.views.static import serve
+from django.conf.urls import url
+
 urlpatterns = [
     #path('', views.home),
     path('',views.ProductView.as_view(),name="home"),
@@ -43,4 +46,7 @@ urlpatterns = [
     path('password-reset/done/',auth_views.PasswordResetDoneView.as_view(template_name="app/password_reset_done.html"),name='password_reset_done'),
     path('password-reset-confirm/<uidb64>/<token>',auth_views.PasswordResetConfirmView.as_view(template_name="app/password_reset_confirm.html",form_class=MyPasswordForm),name='password_reset_confirm'),
     path('password-reset-complete/',auth_views.PasswordResetCompleteView.as_view(template_name="app/password_reset_complete.html"),name='password_reset_complete'),
+
+    url(r'^media/(?p<path>.*)$', serve,{'document_root':     settings.MEDIA_ROOT}),
+    url(r'^static/(?p<path>.*)$', serve,{'document_root':     settings.STATIC_ROOT}),
 ]   + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
